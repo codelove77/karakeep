@@ -1,0 +1,66 @@
+appId: ${APP_ID}
+---
+# Test URL sharing from Safari (iOS) or Chrome (Android)
+
+# First, ensure we're signed in
+- runFlow: 01-auth-setup.yaml
+
+# Open Safari (iOS) or Chrome (Android)
+- launchApp:
+    appId: com.apple.mobilesafari
+    when:
+      platform: iOS
+- launchApp:
+    appId: com.android.chrome
+    when:
+      platform: Android
+
+# Navigate to a test URL
+- tapOn:
+    id: ".*address.*bar.*|.*url.*bar.*|.*search.*"
+- inputText: "https://example.com/test-article"
+- pressKey: Enter
+- waitForAnimationToEnd
+
+# Trigger share sheet
+- tapOn:
+    id: ".*share.*button.*|.*action.*button.*"
+    platform: iOS
+- tapOn:
+    text: "Share"
+    platform: Android
+
+# Select Karakeep from share sheet
+- scrollUntilVisible:
+    element:
+      text: "Karakeep"
+    direction: DOWN
+    maxSwipes: 3
+- tapOn:
+    text: "Karakeep"
+
+# The app should open to the sharing screen
+- assertVisible:
+    appId: ${APP_ID}
+    text: "Save bookmark"
+
+# Verify the URL is populated
+- assertVisible:
+    text: "https://example.com/test-article"
+
+# Save the bookmark
+- tapOn:
+    text: "Save"
+    id: "save-bookmark-button"
+
+# Verify success
+- assertVisible:
+    text: "Bookmark saved"
+
+# Go to bookmarks list to verify
+- tapOn:
+    text: "View bookmarks"
+
+# Verify the bookmark appears in the list
+- assertVisible:
+    text: "example.com"

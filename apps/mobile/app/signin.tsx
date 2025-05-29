@@ -133,6 +133,7 @@ export default function Signin() {
           <View className="gap-2">
             <Text className="font-bold">Server Address</Text>
             <Input
+              testID="server-url-input"
               className="w-full"
               placeholder="Server Address"
               value={formState.serverAddress}
@@ -149,6 +150,7 @@ export default function Signin() {
               <View className="gap-2">
                 <Text className="font-bold">Email</Text>
                 <Input
+                  testID="email-input"
                   className="w-full"
                   placeholder="Email"
                   keyboardType="email-address"
@@ -162,6 +164,7 @@ export default function Signin() {
               <View className="gap-2">
                 <Text className="font-bold">Password</Text>
                 <Input
+                  testID="password-input"
                   className="w-full"
                   placeholder="Password"
                   secureTextEntry

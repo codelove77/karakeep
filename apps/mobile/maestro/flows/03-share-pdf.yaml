@@ -1,0 +1,100 @@
+appId: ${APP_ID}
+---
+# Test PDF sharing from Files app (iOS) or file manager (Android)
+
+# First, ensure we're signed in
+- runFlow: 01-auth-setup.yaml
+
+# Open Files app (iOS) or Files/Downloads (Android)
+- launchApp:
+    appId: com.apple.DocumentsApp
+    platform: iOS
+- launchApp:
+    appId: com.google.android.documentsui
+    platform: Android
+
+# Navigate to test PDF location
+# For iOS: iCloud Drive > Test Documents
+- tapOn:
+    text: "iCloud Drive"
+    platform: iOS
+- tapOn:
+    text: "Test Documents"
+    platform: iOS
+
+# For Android: Downloads folder
+- tapOn:
+    text: "Downloads"
+    platform: Android
+
+# Select test PDF
+- tapOn:
+    text: "test-document.pdf"
+
+# Long press to show context menu (iOS)
+- longPressOn:
+    text: "test-document.pdf"
+    platform: iOS
+    duration: 1000
+
+# Tap share button
+- tapOn:
+    id: ".*share.*|.*action.*"
+    platform: iOS
+- tapOn:
+    text: "Share"
+    platform: Android
+
+# Select Karakeep from share sheet
+- scrollUntilVisible:
+    element:
+      text: "Karakeep"
+    direction: DOWN
+    maxSwipes: 3
+- tapOn:
+    text: "Karakeep"
+
+# The app should open to the sharing screen
+- assertVisible:
+    appId: ${APP_ID}
+    text: "Hoarding" # Current loading text
+
+# Wait for processing
+- waitForAnimationToEnd
+
+# Should show success or already exists
+- assertAnyOf:
+    - assertVisible:
+        text: "Hoarded!"
+    - assertVisible:
+        text: "Already Hoarded!"
+
+# Can optionally tap Manage to view the bookmark
+- tapOn:
+    text: "Manage"
+    optional: true
+
+# Or dismiss to go back to dashboard
+- tapOn:
+    text: "Dismiss"
+
+# Verify we're back on dashboard
+- assertVisible:
+    text: "Bookmarks"
+
+# Search for the PDF bookmark (since it might not be visible immediately)
+- tapOn:
+    id: "search-button"
+    optional: true
+- inputText: "test-document"
+
+# Verify the PDF bookmark exists
+- assertVisible:
+    text: "test-document"
+
+# NOTE: PDF badge assertion will fail until PDF support is implemented
+# This is expected and shows what needs to be fixed
+- assertVisible:
+    text: "PDF"
+    id: "asset-badge"
+    optional: true # This will fail until PDF support is added

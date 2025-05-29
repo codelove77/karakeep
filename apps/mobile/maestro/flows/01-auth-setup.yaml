@@ -1,0 +1,32 @@
+appId: app.hoarder.hoardermobile
+---
+# Setup flow - Sign in to the app
+- launchApp:
+    clearState: true
+
+# Check if we're on the signin page
+- assertVisible:
+    text: "Sign in to your account"
+
+# Enter server URL
+- tapOn:
+    id: "server-url-input"
+- inputText: ${SERVER_URL}
+
+# Enter credentials
+- tapOn:
+    id: "email-input"
+- inputText: ${TEST_EMAIL}
+
+- tapOn:
+    id: "password-input"
+- inputText: ${TEST_PASSWORD}
+
+# Sign in
+- tapOn:
+    text: "Sign In"
+
+# Wait for dashboard to load
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Bookmarks"

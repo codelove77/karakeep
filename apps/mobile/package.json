@@ -12,7 +12,13 @@
     "format:fix": "prettier . --write",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e:env:start": "./maestro/helpers/start-test-environment.sh",
+    "test:e2e:env:stop": "./maestro/helpers/stop-test-environment.sh",
+    "test:e2e": "maestro test maestro/flows/",
+    "test:e2e:ios": "./maestro/helpers/run-ios-test.sh",
+    "test:e2e:url": "maestro test maestro/flows/02-share-url.yaml",
+    "test:e2e:studio": "maestro studio"
   },
   "dependencies": {
     "@karakeep/shared": "workspace:^0.1.0",

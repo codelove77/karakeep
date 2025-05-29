@@ -1,0 +1,62 @@
+appId: app.hoarder.hoardermobile
+---
+# Setup flow - Sign in to the app (Dev build)
+- launchApp:
+    clearState: true
+
+# Handle Expo dev server screen if present
+# First check if we have recently opened section
+- tapOn:
+    text: "Karakeep"
+    optional: true
+    below:
+      text: "Recently opened"
+
+# If that didn't work, try the dev server
+- tapOn:
+    text: "http://10.0.2.2:8081"
+    optional: true
+
+# Wait for app to load
+- waitForAnimationToEnd
+
+# Handle developer menu if present
+- tapOn:
+    text: "Continue"
+    optional: true
+
+# If still in dev menu, go home
+- tapOn:
+    text: "Go home"
+    optional: true
+
+# Wait for actual app to load
+- waitForAnimationToEnd
+
+# Check if we're on the signin page
+- assertVisible:
+    text: "Server Address"
+
+# Enter server URL
+- tapOn:
+    id: "server-url-input"
+- eraseText
+- inputText: ${SERVER_URL}
+
+# Enter credentials
+- tapOn:
+    id: "email-input"
+- inputText: ${TEST_EMAIL}
+
+- tapOn:
+    id: "password-input"
+- inputText: ${TEST_PASSWORD}
+
+# Sign in
+- tapOn:
+    text: "Sign In"
+
+# Wait for dashboard to load
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Bookmarks"
