@@ -77,6 +77,9 @@ export default {
       [
         "expo-share-intent",
         {
+          // Processing a transparent share extension before it appears can
+          // leave the source app covered by an unresponsive overlay on iOS.
+          iosHideView: false,
           iosActivationRules: {
             NSExtensionActivationSupportsWebURLWithMaxCount: 1,
             NSExtensionActivationSupportsWebPageWithMaxCount: 1,
